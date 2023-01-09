@@ -7,11 +7,12 @@ describe('Adventure', () => {
   const adventureDetailsPage = new AdventureDetailsPage();
 
   it('should visit CarvedRock homepage', () => {
+    cy.createAdventure(4, 'New Adventure');
     homePage.visit();
   });
 
-  it('should open the Breithorn adventure', () => {
-    homePage.clickMoreDetailsBtn(1).getAdventureTitle().should('have.text', 'Breithorn, Pennine Alps');
+  it('should open the New Adventure', () => {
+    homePage.clickMoreDetailsBtn(4).getAdventureTitle().should('have.text', 'New Adventure');
   });
 
   it('should post a comment', () => {
@@ -31,5 +32,7 @@ describe('Adventure', () => {
       .addComment('Josh', '')
       .getCommentFieldValidationError()
       .should('have.text', 'Comment is required.');
+
+    cy.deleteAdventure(4);
   });
 });
