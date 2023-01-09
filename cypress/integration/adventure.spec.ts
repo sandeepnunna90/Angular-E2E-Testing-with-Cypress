@@ -6,8 +6,12 @@ describe('Adventure', () => {
   const homePage = new HomePage();
   const adventureDetailsPage = new AdventureDetailsPage();
 
-  it('should visit CarvedRock homepage', () => {
+  before(() => {
+    cy.deleteAdventure(4);
     cy.createAdventure(4, 'New Adventure');
+  });
+
+  it('should visit CarvedRock homepage', () => {
     homePage.visit();
   });
 
@@ -32,7 +36,5 @@ describe('Adventure', () => {
       .addComment('Josh', '')
       .getCommentFieldValidationError()
       .should('have.text', 'Comment is required.');
-
-    cy.deleteAdventure(4);
   });
 });

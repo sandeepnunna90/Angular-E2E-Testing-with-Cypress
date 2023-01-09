@@ -84,5 +84,5 @@ Cypress.Commands.add('createAdventure', (id: number, title: string): void => {
 });
 
 Cypress.Commands.add('deleteAdventure', (id: number): void => {
-  cy.request('DELETE', `http://localhost:3000/adventures/${id}`);
+  cy.request({ method: 'DELETE', url: `http://localhost:3000/adventures/${id}`, failOnStatusCode: false });
 });

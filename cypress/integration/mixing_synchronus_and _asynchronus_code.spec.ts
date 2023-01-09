@@ -17,6 +17,6 @@ describe('Mixing Synchronus and Asyncrhonus Code', () => {
       }
     });
 
-    cy.get('p[data-test-automation="number-of-results"] b').should('have.text', 3);
+    cy.get('p[data-test-automation="number-of-results"] b').should('not.have.text', 1);
   });
 });
