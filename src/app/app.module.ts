@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, DoBootstrap, ApplicationRef  } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,6 +16,10 @@ import { AboutComponent } from './components/about/about.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommentModalComponent } from './components/comment-modal/comment-modal.component';
 import { TransformArrayForGrid } from './pipes/TransformArrayForGrid';
+
+declare global {
+  interface Window { appRef: ApplicationRef, Cypress: any }
+}
 
 @NgModule({
   declarations: [
@@ -39,6 +43,13 @@ import { TransformArrayForGrid } from './pipes/TransformArrayForGrid';
     HttpClientModule
   ],
   providers: [ NgbActiveModal ],
-  bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule implements DoBootstrap {
+  ngDoBootstrap(appRef: ApplicationRef): void {
+      appRef.bootstrap(AppComponent);
+
+      if (window.Cypress) {
+        window.appRef = appRef;
+      }
+  }
+}

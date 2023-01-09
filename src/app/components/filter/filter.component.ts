@@ -1,6 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { FilterService } from '../../services/FilterService';
 
+declare global {
+  interface Window { FilterComponent: FilterComponent }
+}
+
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
@@ -13,6 +17,10 @@ export class FilterComponent {
 
   constructor(private filterService: FilterService) {
     this.filterService.filterValueChange.subscribe(value => this.filterValue = value);
+
+    if(window.Cypress) {
+      window.FilterComponent = this;
+    }
   }
 
   onChange(value: string): void {
