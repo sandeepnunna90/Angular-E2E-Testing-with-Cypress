@@ -41,3 +41,17 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+declare namespace Cypress {
+  interface Chainable {
+    filterAdventures(text: string): void;
+  }
+}
+
+Cypress.Commands.add("filterAdventures", (text: string): void => {
+  cy.window().then((window: Window) => {
+    cy.wrap(window).its('FilterComponent').invoke('onChange', text);  //onChange is the onchange event called in filter html
+    cy.wait(1000);
+    cy.wrap(window).its('appRef').invoke('tick');
+  });
+});
