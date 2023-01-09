@@ -15,30 +15,21 @@ describe('Adventure', () => {
   });
 
   it('should post a comment', () => {
-    cy.contains('Reset Comments').click();
-    cy.contains('Add Comment').click();
-
-    cy.get('#name').type('Josh');
-    cy.get('#comment-text').type('What a great adventure!');
-    cy.get('#add-comment-button').click();
-
-    cy.get('div[data-test-automation="user-comments"] blockquote:last-child p')
-        .should('have.text', 'What a great adventure!');
-    cy.get('div[data-test-automation="user-comments"] blockquote:last-child footer')
-        .should('have.text', 'Josh');
-
-    cy.get('div[data-test-automation="user-comments"] blockquote:last-child').then($el => {
-      cy.wrap($el).find('p').should('have.text', 'What a great adventure!');
-      cy.wrap($el).find('footer').should('have.text', 'Josh');
-    });
+    adventureDetailsPage
+      .resetComments()
+      .addComment('Josh', 'What a great adventure!')
+      .getLastComment().then($el => {
+        cy.wrap($el).find('p').should('have.text', 'What a great adventure!');
+        cy.wrap($el).find('footer').should('have.text', 'Josh');
+      });
+    // Note: Assertions are not part of page objects, so the 'should' part should stay in the spec
+    // chaining methods makes it more clean and readble
   });
 
   it('should not post a comment if the comment text is missing', () => {
-    cy.contains('Add Comment').click();
-
-    cy.get('#name').type('Josh');
-    cy.get('#add-comment-button').click();
-    cy.get('div[data-test-automation="comment-text"] .text-danger')
+    adventureDetailsPage
+      .addComment('Josh', '')
+      .getCommentFieldValidationError()
       .should('have.text', 'Comment is required.');
   });
 });
