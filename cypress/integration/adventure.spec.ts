@@ -1,11 +1,17 @@
+import { AdventureDetailsPage } from "./pages/adventure-details.page";
+import { HomePage } from "./pages/home.page";
+
 describe('Adventure', () => {
+
+  const homePage = new HomePage();
+  const adventureDetailsPage = new AdventureDetailsPage();
+
   it('should visit CarvedRock homepage', () => {
-    cy.visit('/');
+    homePage.visit();
   });
 
   it('should open the Breithorn adventure', () => {
-    cy.get('a[href="/adventure/1"]').click();
-    cy.get('#title').should('have.text', 'Breithorn, Pennine Alps');
+    homePage.clickMoreDetailsBtn(1).getAdventureTitle().should('have.text', 'Breithorn, Pennine Alps');
   });
 
   it('should post a comment', () => {
